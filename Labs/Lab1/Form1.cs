@@ -15,8 +15,22 @@ namespace Lab1
     {
         private const int SampleSize = 6000;
         private const int SplitSectionNumbers = 26;
+        private const int R = SplitSectionNumbers - 1;
         private List<double> randomNumbers = new List<double>();
         private readonly Generator _generator = new Generator();
+        private double[] occurencesToSection = new double[SplitSectionNumbers];
+        private double a;
+        private readonly List<Tuple<double, double>> criticalValues = new List<Tuple<double, double>> 
+        { new Tuple<double, double>(0.99, 11.52), 
+            new Tuple<double, double>(0.975, 13.12),
+            new Tuple<double, double>(0.95, 14.61), 
+            new Tuple<double, double>(0.9, 16.47), 
+            new Tuple<double, double>(0.8, 18.94), 
+            new Tuple<double, double>(0.7, 20.87), 
+            new Tuple<double, double>(0.6, 22.62),
+            new Tuple<double, double>(0.5, 24.34),
+            new Tuple<double, double>(0.4, 26.14),
+            new Tuple<double, double>(0.3, 28.17) };
 
         private double _mathDelay;
 
@@ -34,6 +48,7 @@ namespace Lab1
             calculateDispersionButton.Enabled = false;
             calculateSecondInitialMomentButton.Enabled = false;
             calculateThirdInitialMomentButton.Enabled = false;
+            calculatePirsonsCritetionButton.Enabled = false;
         }
 
         private void generateNumbersButton_Click(object sender, EventArgs e)
@@ -65,47 +80,46 @@ namespace Lab1
 
             for (int i = 0; i < SplitSectionNumbers; i++)
             {
-                double occurences = 0;
+                occurencesToSection[i] = 0;
+            }
 
-                for (int j = 0; j < SampleSize; j++)
-                {
-                    if (randomNumbers[j] >= i * ((double)1 / SplitSectionNumbers)
-                        && randomNumbers[j] < (i + 1) * ((double)1 / SplitSectionNumbers))
-                    {
-                        occurences += 1;
-                    }
-                }
-
-                barChartXData[i] = i * ((double) 1 / SplitSectionNumbers);
-                barChartYData[i] = occurences / SampleSize;
+            for (int i = 0; i < SampleSize; i++)
+            {
+                int sectionNumber = (int)Math.Truncate(randomNumbers[i] * SplitSectionNumbers);
+                occurencesToSection[sectionNumber] += 1;
+                barChartXData[sectionNumber] = sectionNumber * ((double)1 / SplitSectionNumbers);
+                barChartYData[sectionNumber] = 
+                    (occurencesToSection[sectionNumber] / (SampleSize * ((double) 1 / SplitSectionNumbers)));
             }
 
             chart1.ChartAreas[0].AxisX.Minimum = 0;
             chart1.ChartAreas[0].AxisX.Maximum = 1;
 
             chart1.Series[0].Points.DataBindXY(barChartXData, barChartYData);
+            calculatePirsonsCritetionButton.Enabled = true;
         }
 
         private void statisticFunctionButton_Click(object sender, EventArgs e)
         {
             double[] barChartXData = new double[SplitSectionNumbers];
             double[] barChartYData = new double[SplitSectionNumbers];
+            double[] occurences = new double[SplitSectionNumbers];
 
             for (int i = 0; i < SplitSectionNumbers; i++)
             {
-                double occurences = 0;
+                occurences[i] = 0;
+            }
 
-                for (int j = 0; j < SampleSize; j++)
+            for (int i = 0; i < SampleSize; i++)
+            {
+                int sectionNumber = (int)Math.Truncate(randomNumbers[i] * SplitSectionNumbers);
+                for(int j = sectionNumber; j < SplitSectionNumbers; j++)
                 {
-                    if (randomNumbers[j] > 0
-                        && randomNumbers[j] < (i + 1) * ((double)1 / SplitSectionNumbers))
-                    {
-                        occurences += 1;
-                    }
+                    occurences[j] += 1;
                 }
-
-                barChartXData[i] = i * ((double)1 / SplitSectionNumbers);
-                barChartYData[i] = occurences / SampleSize;
+                barChartXData[sectionNumber] = sectionNumber * ((double)1 / SplitSectionNumbers);
+                barChartYData[sectionNumber] =
+                    occurences[sectionNumber] / SampleSize;
             }
 
             chart2.ChartAreas[0].AxisX.Minimum = 0;
@@ -170,6 +184,48 @@ namespace Lab1
             }
 
             return sum / SampleSize;
+        }
+
+        private void calculatePirsonsCritetionButton_Click(object sender, EventArgs e)
+        {
+            double pirsonsCriterion = calculatePirsonsCriterion();
+            pirsonsCriterionLabel.Text = pirsonsCriterion.ToString();
+            pirsonsCriterionStatusLabel.Text = checkPirsonCriterion(pirsonsCriterion);
+        }
+
+        private double calculatePirsonsCriterion()
+        {
+            double numberToSectionProbability = (double) 1 / SplitSectionNumbers;
+            double xi = 0;
+
+            for (int i = 0; i < SplitSectionNumbers; i++)
+            {
+                xi += Math.Pow(occurencesToSection[i] / SampleSize -
+                    numberToSectionProbability, 2)
+                    / (numberToSectionProbability);
+            }
+            return xi * SampleSize;
+        }
+
+        private string checkPirsonCriterion(double pirsonsCriterion)
+        {
+            double a = Double.Parse(comboBox1.SelectedItem.ToString());
+            double criticalValue = 0;
+            foreach(Tuple<double, double> pair in criticalValues)
+            {
+                if (pair.Item1 == a)
+                {
+                    criticalValue = pair.Item2;
+                }
+            }
+
+            if (pirsonsCriterion < criticalValue)
+            {
+                return "Гипотеза принимается";
+            } else
+            {
+                return "Гипотеза не принимается";
+            }
         }
     }
 }
