@@ -55,6 +55,13 @@
             this.pirsonsCriterionStatusLabel = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.calculateKolmogorovCriterionButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.dLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lambdaLabel = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.pLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.SuspendLayout();
@@ -267,11 +274,79 @@
             this.label2.TabIndex = 19;
             this.label2.Text = "Значение 1-a";
             // 
+            // calculateKolmogorovCriterionButton
+            // 
+            this.calculateKolmogorovCriterionButton.Location = new System.Drawing.Point(1184, 659);
+            this.calculateKolmogorovCriterionButton.Name = "calculateKolmogorovCriterionButton";
+            this.calculateKolmogorovCriterionButton.Size = new System.Drawing.Size(213, 55);
+            this.calculateKolmogorovCriterionButton.TabIndex = 20;
+            this.calculateKolmogorovCriterionButton.Text = "Критерий Колмогорова";
+            this.calculateKolmogorovCriterionButton.UseVisualStyleBackColor = true;
+            this.calculateKolmogorovCriterionButton.Click += new System.EventHandler(this.calculateKolmogorovCriterionButton_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(1434, 697);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(18, 17);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "D";
+            // 
+            // dLabel
+            // 
+            this.dLabel.AutoSize = true;
+            this.dLabel.Location = new System.Drawing.Point(1477, 697);
+            this.dLabel.Name = "dLabel";
+            this.dLabel.Size = new System.Drawing.Size(0, 17);
+            this.dLabel.TabIndex = 22;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(1398, 723);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(54, 17);
+            this.label4.TabIndex = 23;
+            this.label4.Text = "lambda";
+            // 
+            // lambdaLabel
+            // 
+            this.lambdaLabel.AutoSize = true;
+            this.lambdaLabel.Location = new System.Drawing.Point(1477, 723);
+            this.lambdaLabel.Name = "lambdaLabel";
+            this.lambdaLabel.Size = new System.Drawing.Size(0, 17);
+            this.lambdaLabel.TabIndex = 24;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(1379, 755);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(73, 17);
+            this.label5.TabIndex = 25;
+            this.label5.Text = "P(lambda)";
+            // 
+            // pLabel
+            // 
+            this.pLabel.AutoSize = true;
+            this.pLabel.Location = new System.Drawing.Point(1477, 755);
+            this.pLabel.Name = "pLabel";
+            this.pLabel.Size = new System.Drawing.Size(0, 17);
+            this.pLabel.TabIndex = 26;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1684, 863);
+            this.Controls.Add(this.pLabel);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lambdaLabel);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.dLabel);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.calculateKolmogorovCriterionButton);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.pirsonsCriterionStatusLabel);
@@ -294,6 +369,7 @@
             this.Controls.Add(this.generatedNumbers);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.ResumeLayout(false);
@@ -325,5 +401,12 @@
         private System.Windows.Forms.Label pirsonsCriterionStatusLabel;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button calculateKolmogorovCriterionButton;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label dLabel;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lambdaLabel;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label pLabel;
     }
 }
