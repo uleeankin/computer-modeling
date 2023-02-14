@@ -15,10 +15,12 @@ namespace Lab1
     {
         private const int SampleSize = 6000;
         private const int SplitSectionNumbers = 26;
+        private const double separatingElement = 0.6;
         private List<double> randomNumbers = new List<double>();
         private readonly Generator _generator = new Generator();
         private double[] occurencesToSection = new double[SplitSectionNumbers];
         private static double[] statisticFunctionProbability = new double[SplitSectionNumbers];
+
         private readonly List<Tuple<double, double>> criticalValues = new List<Tuple<double, double>> 
         { new Tuple<double, double>(0.99, 11.52), 
             new Tuple<double, double>(0.975, 13.12),
@@ -46,6 +48,17 @@ namespace Lab1
             new Tuple<double, double>(2.0, 0.001), 
         };
 
+        private List<Tuple<double, double>> quantileValues = new List<Tuple<double, double>>()
+        {
+            new Tuple<double, double>(0.1, 1.65),
+            new Tuple<double, double>(0.05, 1.96),
+            new Tuple<double, double>(0.04, 2.06),
+            new Tuple<double, double>(0.03, 2.18),
+            new Tuple<double, double>(0.02, 2.33),
+            new Tuple<double, double>(0.01, 2.58),
+            new Tuple<double, double>(0.001, 3.3),
+        };
+
         private double _mathDelay;
 
         public Form1()
@@ -64,6 +77,7 @@ namespace Lab1
             calculateThirdInitialMomentButton.Enabled = false;
             calculatePirsonsCritetionButton.Enabled = false;
             calculateKolmogorovCriterionButton.Enabled = false;
+            seriesCriterionButton.Enabled = false;
         }
 
         private void generateNumbersButton_Click(object sender, EventArgs e)
@@ -86,6 +100,7 @@ namespace Lab1
             calculateMathematicalExpectationButton.Enabled = true;
             calculateSecondInitialMomentButton.Enabled = true;
             calculateThirdInitialMomentButton.Enabled = true;
+            seriesCriterionButton.Enabled = true;
         }
 
         private void buildBarChartButton_Click(object sender, EventArgs e)
@@ -313,9 +328,113 @@ namespace Lab1
             return theoreticalFunction;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void seriesCriterionButton_Click(object sender, EventArgs e)
         {
-
+            int[] newSequence = CreateNewSequence();
+            int r = CountSeries(newSequence);
+            rLabel.Text = r.ToString();
+            double mathDelay = CalculateRMathDelay();
+            criterionMathDelayLabel.Text = mathDelay.ToString();
+            double dispersion = CalculateRDispersion();
+            criterionDispersionLabel.Text = dispersion.ToString();
+            double standartDeviation = CalculateStandartDeviation(dispersion);
+            criterionStandartDeviationLabel.Text = standartDeviation.ToString();
+            double importanceLevel = Double.Parse(comboBox2.SelectedItem.ToString());
+            double quantile = getQuantileValue(importanceLevel);
+            quantileLabel.Text = quantile.ToString();
+            double rh = GetCriticalValurRH(quantile, mathDelay, standartDeviation);
+            rhLabel.Text = rh.ToString();
+            double rb = GetCriticalValurRB(quantile, mathDelay, standartDeviation);
+            rbLabel.Text = rb.ToString();
+            seriesCriterionResultValue.Text = CheckSeriesCriterion(r, rh, rb);
         }
+
+        private int[] CreateNewSequence()
+        {
+            int[] newSequence = new int[SampleSize];
+
+            for (int i = 0; i < SampleSize; i++)
+            {
+                if (randomNumbers[i] < separatingElement)
+                {
+                    newSequence[i] = 0;
+                } else
+                {
+                    newSequence[i] = 1;
+                }
+            }
+
+            return newSequence;
+        }
+
+        private int CountSeries(int[] sequence)
+        {
+            int value = sequence[0];
+            int r = 1;
+
+            foreach (int element in sequence)
+            {
+                if (element != value)
+                {
+                    value = element;
+                    r++;
+                }
+            }
+
+            return r;
+        }
+
+        private double CalculateRMathDelay()
+        {
+            return 2 * SampleSize * separatingElement * (1 - separatingElement)
+                + Math.Pow(separatingElement, 2) + Math.Pow(1 - separatingElement, 2);
+        }
+
+        private double CalculateRDispersion()
+        {
+            return 4 * SampleSize * separatingElement * (1 - separatingElement)
+                * (1 - 3 * separatingElement * (1 - separatingElement))
+                - 2 * separatingElement * (1 - separatingElement)
+                * (3 - 10 * separatingElement * (1 - separatingElement));
+        }
+
+        private double CalculateStandartDeviation(double dispersion)
+        {
+            return Math.Sqrt(dispersion);
+        }
+
+        private double getQuantileValue(double importanceLevel)
+        {
+            foreach (var value in quantileValues)
+            {
+                if (importanceLevel == value.Item1)
+                {
+                    return value.Item2;
+                }
+            }
+
+            return 0;
+        } 
+
+        private double GetCriticalValurRH(double quantileValue, double mathDelay, double standartDeviation)
+        {
+            return mathDelay - quantileValue * standartDeviation;
+        }
+
+        private double GetCriticalValurRB(double quantileValue, double mathDelay, double standartDeviation)
+        {
+            return mathDelay + quantileValue * standartDeviation;
+        }
+
+        private string CheckSeriesCriterion(double r, double rh, double rb)
+        {
+            if (rh <= r && rh <= rb)
+            {
+                return "Гипотеза принята";
+            }
+
+            return "Гипотеза отвергнута";
+        }
+
     }
 }
