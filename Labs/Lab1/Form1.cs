@@ -16,10 +16,10 @@ namespace Lab1
         private const int SampleSize = 6000;
         private const int SplitSectionNumbers = 26;
         private const double separatingElement = 0.6;
-        private List<double> randomNumbers = new List<double>();
+        private static List<double> randomNumbers = new List<double>();
         private readonly Generator _generator = new Generator();
         private double[] occurencesToSection = new double[SplitSectionNumbers];
-        private static double[] statisticFunctionProbability = new double[SplitSectionNumbers];
+        private static double[] statisticFunctionProbability = new double[SampleSize];
 
         private readonly List<Tuple<double, double>> criticalValues = new List<Tuple<double, double>> 
         { new Tuple<double, double>(0.99, 11.52), 
@@ -152,7 +152,7 @@ namespace Lab1
                     occurences[sectionNumber] / SampleSize;
             }
 
-            getStatisticFunctionProbability(occurences);
+            getStatisticFunctionProbability();
 
             chart2.ChartAreas[0].AxisX.Minimum = 0;
             chart2.ChartAreas[0].AxisX.Maximum = 1;
@@ -160,11 +160,28 @@ namespace Lab1
             chart2.Series[0].Points.DataBindXY(barChartXData, barChartYData);
         }
 
-        private void getStatisticFunctionProbability(double[] occurences)
+        private void getStatisticFunctionProbability()
         {
-            for(int i = 0; i < occurences.Length; i++)
+            double[] occurences = new double[SampleSize];
+
+            for (int i = 0; i < SampleSize; i++)
             {
-                statisticFunctionProbability[i] = occurences[i] / SampleSize;
+                occurences[i] = 0;
+            }
+
+            for (int i = 0; i < SampleSize; i++)
+            {
+                for (int j = 0; j < SampleSize; j++)
+                {
+                    if (randomNumbers[j] < randomNumbers[i])
+                    {
+                        occurences[i] += 1;
+                    }
+                }
+            }
+            for (int i = 0; i < SampleSize; i++)
+            {
+                statisticFunctionProbability[i] = i / SampleSize;
             }
             calculateKolmogorovCriterionButton.Enabled = true;
         }
@@ -298,12 +315,24 @@ namespace Lab1
             return d * Math.Sqrt(sampleSize);
         }
 
+        private static double[] getTheoreticalFunction()
+        {
+            double[] theoreticalFunction = new double[SampleSize];
+
+            for (int i = 0; i < SampleSize; i++)
+            {
+                theoreticalFunction[i] = randomNumbers[i];
+            }
+            Array.Sort(theoreticalFunction);
+            return theoreticalFunction;
+        }
+
         private static double calculateD(double[] theoreticalFunction,
                                             double[] realFunction)
         {
             double max = 0;
 
-            for (int i = 0; i < SplitSectionNumbers; i++)
+            for (int i = 0; i < SampleSize; i++)
             {
                 double value = Math.Abs(realFunction[i] - theoreticalFunction[i]);
                 if (value > max)
@@ -312,20 +341,7 @@ namespace Lab1
                 }
             }
 
-            return max;
-        }
-
-        private static double[] getTheoreticalFunction()
-        {
-            double[] theoreticalFunction = new double[SplitSectionNumbers];
-            double value = (double)SampleSize / SplitSectionNumbers;
-
-            for (int i = 0; i < SplitSectionNumbers; i++)
-            {
-                theoreticalFunction[i] = (value * (i + 1)) / SampleSize;
-            }
-
-            return theoreticalFunction;
+            return max/100;
         }
 
         private void seriesCriterionButton_Click(object sender, EventArgs e)
