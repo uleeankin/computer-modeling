@@ -29,12 +29,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.label1 = new System.Windows.Forms.Label();
             this.sampleSizeTextBox = new System.Windows.Forms.TextBox();
             this.generateButton = new System.Windows.Forms.Button();
@@ -95,32 +95,32 @@
             // 
             // frequencyHistogram
             // 
-            chartArea3.Name = "ChartArea1";
-            this.frequencyHistogram.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.frequencyHistogram.Legends.Add(legend3);
+            chartArea1.Name = "ChartArea1";
+            this.frequencyHistogram.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.frequencyHistogram.Legends.Add(legend1);
             this.frequencyHistogram.Location = new System.Drawing.Point(236, 12);
             this.frequencyHistogram.Name = "frequencyHistogram";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.frequencyHistogram.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.frequencyHistogram.Series.Add(series1);
             this.frequencyHistogram.Size = new System.Drawing.Size(564, 300);
             this.frequencyHistogram.TabIndex = 4;
             this.frequencyHistogram.Text = "chart1";
             // 
             // statisticalDistributionFunction
             // 
-            chartArea4.Name = "ChartArea1";
-            this.statisticalDistributionFunction.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.statisticalDistributionFunction.Legends.Add(legend4);
+            chartArea2.Name = "ChartArea1";
+            this.statisticalDistributionFunction.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.statisticalDistributionFunction.Legends.Add(legend2);
             this.statisticalDistributionFunction.Location = new System.Drawing.Point(236, 333);
             this.statisticalDistributionFunction.Name = "statisticalDistributionFunction";
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.statisticalDistributionFunction.Series.Add(series4);
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.statisticalDistributionFunction.Series.Add(series2);
             this.statisticalDistributionFunction.Size = new System.Drawing.Size(564, 300);
             this.statisticalDistributionFunction.TabIndex = 5;
             this.statisticalDistributionFunction.Text = "chart2";
@@ -220,27 +220,24 @@
             this.dLabel.AutoSize = true;
             this.dLabel.Location = new System.Drawing.Point(1066, 164);
             this.dLabel.Name = "dLabel";
-            this.dLabel.Size = new System.Drawing.Size(54, 17);
+            this.dLabel.Size = new System.Drawing.Size(0, 17);
             this.dLabel.TabIndex = 21;
-            this.dLabel.Text = "label11";
             // 
             // lambdaLabel
             // 
             this.lambdaLabel.AutoSize = true;
             this.lambdaLabel.Location = new System.Drawing.Point(1063, 198);
             this.lambdaLabel.Name = "lambdaLabel";
-            this.lambdaLabel.Size = new System.Drawing.Size(54, 17);
+            this.lambdaLabel.Size = new System.Drawing.Size(0, 17);
             this.lambdaLabel.TabIndex = 22;
-            this.lambdaLabel.Text = "label11";
             // 
             // pLabel
             // 
             this.pLabel.AutoSize = true;
             this.pLabel.Location = new System.Drawing.Point(1066, 239);
             this.pLabel.Name = "pLabel";
-            this.pLabel.Size = new System.Drawing.Size(54, 17);
+            this.pLabel.Size = new System.Drawing.Size(0, 17);
             this.pLabel.TabIndex = 23;
-            this.pLabel.Text = "label11";
             // 
             // Form1
             // 
