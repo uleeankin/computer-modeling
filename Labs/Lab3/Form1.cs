@@ -73,84 +73,14 @@ namespace Lab3
                 approximatedRandomValues, SampleSize, approximatedMathDelay);
             showValue(approximatedDispersion, dispersionAppr);
 
-            calculateKolmogorovsCriterion(randomValues, SampleSize);
-        }
-
-        private void calculateKolmogorovsCriterion(List<double> randomNumbers, int sampleSize)
-        {
-            double d = getD(randomNumbers.ToArray(), sampleSize);
-            showD(d);
-
-            double lambda = getLambda(d, sampleSize);
-            showLambda(lambda);
-
-            double p = getP(lambda);
-            showP(p);
-        }
-
-        private void showP(double p)
-        {
-            pLabel.Text = p.ToString();
-        }
-
-        private double getP(double lambda)
-        {
-            foreach (var value in kolmogorovCriterionProbabilityValues)
-            {
-                if (lambda == value.Item1)
-                {
-                    return value.Item2;
-                }
-            }
-
-            return 0;
-        }
-
-        private void showLambda(double lambda)
-        {
-            lambdaLabel.Text = lambda.ToString();
-        }
-
-        private double getLambda(double d, double sampleSize)
-        {
-            return Math.Round(d * Math.Sqrt(sampleSize), 1);
-        }
-
-        private void showD(double d)
-        {
-            dLabel.Text = d.ToString();
-        }
-
-        private double getD(double[] randomNumbers, int sampleSize)
-        {
-            double d = 0;
-
-            Array.Sort(randomNumbers);
-
-            for (int i = 1; i < sampleSize; i++)
-            {
-
-                double dPlus = Math.Abs(((double)i / sampleSize) - Ft(randomNumbers[i]));
-                double dMinus = Math.Abs(Ft(randomNumbers[i]) - ((double)(i - 1) / sampleSize));
-
-                if (dPlus > d)
-                {
-                    d = dPlus;
-                }
-
-                if (dMinus > d)
-                {
-                    d = dMinus;
-                }
-            }
-
-            return d;
         }
 
         private double Ft(double x)
         {
-            return (double) 1.0 / (g * Math.Sqrt(2.0 * Math.PI)) 
-                * Math.Pow(Math.E, (double)-1.0 * (x - Math.Pow(m, 2)) / (2.0 * Math.Pow(g, 2)));
+            double degree = -1.0 * Math.Pow(x - m, 2.0) / (2.0 * Math.Pow(g, 2.0));
+            double a = (double) 1.0 / (g * Math.Sqrt(2.0 * Math.PI));
+            double e = (double)Math.Exp(degree);
+            return (double) a * e;
         }
 
         private double calculateMathDelay(List<double> randomNumbers, int sampleSize)
@@ -315,7 +245,7 @@ namespace Lab3
             for (int i = 0; i < sampleSize; i++)
             {
                 r = random.NextDouble();
-                x = Math.Log((1 + r) / (1 - r) / k);
+                x = Math.Log((1 + r) / (1 - r)) / k;
                 r = random.NextDouble();
                 if (r < 0.5) x = -x;
                 x = m + x * Math.Sqrt(g);

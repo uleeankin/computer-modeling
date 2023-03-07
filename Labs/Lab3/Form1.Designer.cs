@@ -51,22 +51,12 @@
             this.mathDelayLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dispersionLabel = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.splitIntervalsComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.dLabel = new System.Windows.Forms.Label();
-            this.lambdaLabel = new System.Windows.Forms.Label();
-            this.pLabel = new System.Windows.Forms.Label();
             this.statisticalFunctionAppr = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.frequencyHistogramAppr = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.generatedValuesApprListBox = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.pAppr = new System.Windows.Forms.Label();
-            this.lambdaAppr = new System.Windows.Forms.Label();
-            this.dAppr = new System.Windows.Forms.Label();
             this.dispersionAppr = new System.Windows.Forms.Label();
             this.mathDelayAppr = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -177,15 +167,6 @@
             this.dispersionLabel.Size = new System.Drawing.Size(0, 17);
             this.dispersionLabel.TabIndex = 9;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(1245, 155);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(162, 17);
-            this.label5.TabIndex = 11;
-            this.label5.Text = "Критерий Колмогорова";
-            // 
             // splitIntervalsComboBox
             // 
             this.splitIntervalsComboBox.FormattingEnabled = true;
@@ -205,57 +186,6 @@
             this.label7.Size = new System.Drawing.Size(205, 17);
             this.label7.TabIndex = 15;
             this.label7.Text = "Число интервалов разбиения";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1374, 206);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(18, 17);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "D";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1338, 240);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(54, 17);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "lambda";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(1319, 281);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(73, 17);
-            this.label10.TabIndex = 20;
-            this.label10.Text = "P(lambda)";
-            // 
-            // dLabel
-            // 
-            this.dLabel.AutoSize = true;
-            this.dLabel.Location = new System.Drawing.Point(1446, 206);
-            this.dLabel.Name = "dLabel";
-            this.dLabel.Size = new System.Drawing.Size(0, 17);
-            this.dLabel.TabIndex = 21;
-            // 
-            // lambdaLabel
-            // 
-            this.lambdaLabel.AutoSize = true;
-            this.lambdaLabel.Location = new System.Drawing.Point(1443, 240);
-            this.lambdaLabel.Name = "lambdaLabel";
-            this.lambdaLabel.Size = new System.Drawing.Size(0, 17);
-            this.lambdaLabel.TabIndex = 22;
-            // 
-            // pLabel
-            // 
-            this.pLabel.AutoSize = true;
-            this.pLabel.Location = new System.Drawing.Point(1446, 281);
-            this.pLabel.Name = "pLabel";
-            this.pLabel.Size = new System.Drawing.Size(0, 17);
-            this.pLabel.TabIndex = 23;
             // 
             // statisticalFunctionAppr
             // 
@@ -307,30 +237,6 @@
             this.label4.TabIndex = 27;
             this.label4.Text = "Центр. пред. теор.";
             // 
-            // pAppr
-            // 
-            this.pAppr.AutoSize = true;
-            this.pAppr.Location = new System.Drawing.Point(1642, 285);
-            this.pAppr.Name = "pAppr";
-            this.pAppr.Size = new System.Drawing.Size(0, 17);
-            this.pAppr.TabIndex = 32;
-            // 
-            // lambdaAppr
-            // 
-            this.lambdaAppr.AutoSize = true;
-            this.lambdaAppr.Location = new System.Drawing.Point(1639, 244);
-            this.lambdaAppr.Name = "lambdaAppr";
-            this.lambdaAppr.Size = new System.Drawing.Size(0, 17);
-            this.lambdaAppr.TabIndex = 31;
-            // 
-            // dAppr
-            // 
-            this.dAppr.AutoSize = true;
-            this.dAppr.Location = new System.Drawing.Point(1642, 210);
-            this.dAppr.Name = "dAppr";
-            this.dAppr.Size = new System.Drawing.Size(0, 17);
-            this.dAppr.TabIndex = 30;
-            // 
             // dispersionAppr
             // 
             this.dispersionAppr.AutoSize = true;
@@ -362,24 +268,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1892, 763);
             this.Controls.Add(this.label15);
-            this.Controls.Add(this.pAppr);
-            this.Controls.Add(this.lambdaAppr);
-            this.Controls.Add(this.dAppr);
             this.Controls.Add(this.dispersionAppr);
             this.Controls.Add(this.mathDelayAppr);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.generatedValuesApprListBox);
             this.Controls.Add(this.statisticalFunctionAppr);
             this.Controls.Add(this.frequencyHistogramAppr);
-            this.Controls.Add(this.pLabel);
-            this.Controls.Add(this.lambdaLabel);
-            this.Controls.Add(this.dLabel);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.splitIntervalsComboBox);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.dispersionLabel);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.mathDelayLabel);
@@ -414,22 +310,12 @@
         private System.Windows.Forms.Label mathDelayLabel;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label dispersionLabel;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox splitIntervalsComboBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label dLabel;
-        private System.Windows.Forms.Label lambdaLabel;
-        private System.Windows.Forms.Label pLabel;
         private System.Windows.Forms.DataVisualization.Charting.Chart statisticalFunctionAppr;
         private System.Windows.Forms.DataVisualization.Charting.Chart frequencyHistogramAppr;
         private System.Windows.Forms.ListBox generatedValuesApprListBox;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label pAppr;
-        private System.Windows.Forms.Label lambdaAppr;
-        private System.Windows.Forms.Label dAppr;
         private System.Windows.Forms.Label dispersionAppr;
         private System.Windows.Forms.Label mathDelayAppr;
         private System.Windows.Forms.Label label15;
