@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Lab3
 {
@@ -14,9 +15,8 @@ namespace Lab3
     {
         private int SampleSize;
         private List<double> randomValues = new List<double>();
-        private double startBound = 0;
-        private double middleBound = 0.25;
-        private double endBound = 2.25;
+        private double m = 4.7;
+        private double g = 0.6;
         private readonly List<Tuple<double, double>>
             kolmogorovCriterionProbabilityValues = new List<Tuple<double, double>>
         { new Tuple<double, double>(0.0, 1.0), new Tuple<double, double>(0.1, 1.0),
@@ -43,14 +43,35 @@ namespace Lab3
             randomValues = generateRandomValues(SampleSize);
             showGeneratedValues(randomValues);
 
+            List<double> approximatedRandomValues = 
+                generateApproximatedRandomValues(SampleSize);
+
+            showApproximatedRandomValues(approximatedRandomValues);
+
             int splitSectionNumber = getSplitSectionNumber();
-            buildFrequencyHistogram(splitSectionNumber, randomValues, SampleSize);
-            buildStatisticFunction(splitSectionNumber, randomValues, SampleSize);
+            buildFrequencyHistogram(splitSectionNumber, randomValues, 
+                SampleSize, frequencyHistogram);
+            buildStatisticFunction(splitSectionNumber, randomValues, 
+                SampleSize, statisticalDistributionFunction);
+
+            buildFrequencyHistogram(splitSectionNumber, approximatedRandomValues,
+                SampleSize, frequencyHistogramAppr);
+            buildStatisticFunction(splitSectionNumber, approximatedRandomValues,
+                SampleSize, statisticalFunctionAppr);
 
             double mathDelay = calculateMathDelay(randomValues, SampleSize);
-            showMathDelay(mathDelay);
+            showValue(mathDelay, mathDelayLabel);
+
+            double approximatedMathDelay = 
+                calculateMathDelay(approximatedRandomValues, SampleSize);
+            showValue(approximatedMathDelay, mathDelayAppr);
+
             double dispersion = сalculateDispersion(randomValues, SampleSize, mathDelay);
-            showDispersion(dispersion);
+            showValue(dispersion, dispersionLabel);
+
+            double approximatedDispersion = сalculateDispersion(
+                approximatedRandomValues, SampleSize, approximatedMathDelay);
+            showValue(approximatedDispersion, dispersionAppr);
 
             calculateKolmogorovsCriterion(randomValues, SampleSize);
         }
@@ -108,18 +129,9 @@ namespace Lab3
 
             for (int i = 1; i < sampleSize; i++)
             {
-                double dPlus = 0;
-                double dMinus = 0;
 
-                if (randomNumbers[i] < 0.25 && randomNumbers[i] >= 0)
-                {
-                    dPlus = Math.Abs(((double)i / sampleSize) - Ft1(randomNumbers[i]));
-                    dMinus = Math.Abs(Ft1(randomNumbers[i]) - ((double)(i - 1) / sampleSize));
-                } else if (randomNumbers[i] < 2.25 && randomNumbers[i] >= 0.25)
-                {
-                    dPlus = Math.Abs(((double)i / sampleSize) - Ft2(randomNumbers[i]));
-                    dMinus = Math.Abs(Ft2(randomNumbers[i]) - ((double)(i - 1) / sampleSize));
-                }
+                double dPlus = Math.Abs(((double)i / sampleSize) - Ft(randomNumbers[i]));
+                double dMinus = Math.Abs(Ft(randomNumbers[i]) - ((double)(i - 1) / sampleSize));
 
                 if (dPlus > d)
                 {
@@ -135,19 +147,10 @@ namespace Lab3
             return d;
         }
 
-        private double Ft1(double x)
+        private double Ft(double x)
         {
-            return (double)Math.Sqrt(x);
-        }
-
-        private double Ft2(double x)
-        {
-            return (double) (0.25 * x + 0.4375);
-        }
-
-        private void showMathDelay(double mathDelay)
-        {
-            mathDelayLabel.Text = mathDelay.ToString();
+            return (double) 1.0 / (g * Math.Sqrt(2.0 * Math.PI)) 
+                * Math.Pow(Math.E, (double)-1.0 * (x - Math.Pow(m, 2)) / (2.0 * Math.Pow(g, 2)));
         }
 
         private double calculateMathDelay(List<double> randomNumbers, int sampleSize)
@@ -163,9 +166,9 @@ namespace Lab3
             return mathDelay;
         }
 
-        private void showDispersion(double dispersion)
+        private void showValue(double value, Label label)
         {
-            dispersionLabel.Text = dispersion.ToString();
+            label.Text = value.ToString();
         }
 
         private double сalculateDispersion(List<double> randomNumbers, int sampleSize, double mathDelay)
@@ -185,11 +188,16 @@ namespace Lab3
             return int.Parse(splitIntervalsComboBox.SelectedItem.ToString());
         }
 
-        private void buildFrequencyHistogram(int splitSectionNumbers, List<double> randomNumbers, int sampleSize)
+        private void buildFrequencyHistogram(int splitSectionNumbers, List<double> numbers, 
+            int sampleSize, Chart chart)
         {
             double[] barChartYData = new double[splitSectionNumbers];
             double[] barChartXData = new double[splitSectionNumbers];
             double[] occurences = new double[splitSectionNumbers];
+
+            double[] randomNumbers = numbers.ToArray();
+            Array.Sort(randomNumbers);
+            double endBound = randomNumbers[sampleSize - 1];
 
             for (int i = 0; i < splitSectionNumbers; i++)
             {
@@ -208,21 +216,26 @@ namespace Lab3
 
                 }
                 barChartXData[i] = i * ((double)endBound / splitSectionNumbers);
-                //barChartYData[i] = occurences[i] / (SampleSize * ((double)endBound / splitSectionNumbers));
-                barChartYData[i] = (double) occurences[i] / SampleSize;
+                barChartYData[i] = ((double) occurences[i] / SampleSize);
             }
 
-            frequencyHistogram.ChartAreas[0].AxisX.Minimum = startBound;
-            frequencyHistogram.ChartAreas[0].AxisX.Maximum = endBound;
+            chart.ChartAreas[0].AxisX.Minimum = randomNumbers[0];
+            chart.ChartAreas[0].AxisX.Maximum = endBound;
 
-            frequencyHistogram.Series[0].Points.DataBindXY(barChartXData, barChartYData);
+            chart.Series[0].Points.DataBindXY(barChartXData, barChartYData);
         }
 
-        private void buildStatisticFunction(int splitSectionNumbers, List<double> randomNumbers, int sampleSize)
+        private void buildStatisticFunction(int splitSectionNumbers, List<double> numbers, 
+            int sampleSize, Chart chart)
         {
             double[] barChartYData = new double[splitSectionNumbers];
             double[] barChartXData = new double[splitSectionNumbers];
             double[] occurences = new double[splitSectionNumbers];
+
+            double[] randomNumbers = numbers.ToArray();
+            Array.Sort(randomNumbers);
+            double endBound = randomNumbers[sampleSize - 1];
+            double startBound = randomNumbers[0];
 
             for (int i = 0; i < splitSectionNumbers; i++)
             {
@@ -241,14 +254,13 @@ namespace Lab3
 
                 }
                 barChartXData[i] = i * ((double)endBound / splitSectionNumbers);
-                //barChartYData[i] = occurences[i] / (SampleSize * ((double)endBound / splitSectionNumbers));
-                barChartYData[i] = (double)occurences[i] / SampleSize;
+                barChartYData[i] = ((double)occurences[i] / SampleSize);
             }
 
-            statisticalDistributionFunction.ChartAreas[0].AxisX.Minimum = startBound;
-            statisticalDistributionFunction.ChartAreas[0].AxisX.Maximum = endBound;
+            chart.ChartAreas[0].AxisX.Minimum = startBound;
+            chart.ChartAreas[0].AxisX.Maximum = endBound;
 
-            statisticalDistributionFunction.Series[0].Points.DataBindXY(barChartXData, barChartYData);
+            chart.Series[0].Points.DataBindXY(barChartXData, barChartYData);
         }
 
         private void showGeneratedValues(List<double> generatedValues)
@@ -264,27 +276,50 @@ namespace Lab3
         {
             List<double> randomValues = new List<double>();
             Random random = new Random();
-            double x;
+            double s;
             double r;
 
-            while (randomValues.Count != sampleSize)
+            for (int i = 0; i < sampleSize; i++)
+            {
+                s = 0;
+                for (int j = 0; j < 12; j++)
+                {
+                    r = random.NextDouble();
+                    s += r;
+                }
+                double x = s - 6;
+                x = m + x * Math.Sqrt(g);
+                randomValues.Add(x);
+            }
+
+            return randomValues;
+        }
+
+        private void showApproximatedRandomValues(List<double> randomValues)
+        {
+            generatedValuesApprListBox.Items.Clear();
+            foreach (double value in randomValues)
+            {
+                generatedValuesApprListBox.Items.Add(value);
+            }
+        }
+
+        private List<double> generateApproximatedRandomValues(int sampleSize)
+        {
+            List<double> randomValues = new List<double>();
+            Random random = new Random();
+            double x;
+            double r;
+            double k = (double)Math.Sqrt(8.0 / Math.PI);
+
+            for (int i = 0; i < sampleSize; i++)
             {
                 r = random.NextDouble();
-                x = Math.Pow(r, 2);
-                if (x < middleBound
-                    && x >= 0)
-                {
-                    randomValues.Add(x);
-                } else
-                {
-                    x = (r - 0.4375) / 0.25;
-
-                    if (x >= middleBound
-                        && x < endBound)
-                    {
-                        randomValues.Add(x);
-                    }
-                }
+                x = Math.Log((1 + r) / (1 - r) / k);
+                r = random.NextDouble();
+                if (r < 0.5) x = -x;
+                x = m + x * Math.Sqrt(g);
+                randomValues.Add(x);
             }
 
             return randomValues;
@@ -294,7 +329,5 @@ namespace Lab3
         {
             return int.Parse(sampleSizeTextBox.Text);
         }
-
-
     }
 }
